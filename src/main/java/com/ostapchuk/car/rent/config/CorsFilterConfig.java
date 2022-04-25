@@ -19,8 +19,8 @@ public class CorsFilterConfig {
     private final FrontendLinkConfig frontendLinkConfig;
 
     @Bean
-    public FilterRegistrationBean<org.springframework.web.filter.CorsFilter> simpleCorsFilter() {
-        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    public FilterRegistrationBean<CorsFilter> simpleCorsFilter() {
+        final var source = new UrlBasedCorsConfigurationSource();
         final CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
         config.setAllowedOrigins(List.of("https://www.sandbox.paypal.com", frontendLinkConfig.link()));
