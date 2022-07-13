@@ -1,1 +1,3 @@
 rootProject.name = 'carrent-backend'
+include 'email-service'
+include 'core-service'

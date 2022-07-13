@@ -1,0 +1,11 @@
+dependencies {
+    implementation 'com.sun.mail:javax.mail:1.6.2'
+}
+
+bootJar {
+    enabled = true
+}
+
+bootBuildImage {
+    imageName = 'qjnzero/' + rootProject.name + '-' + project.name
+}

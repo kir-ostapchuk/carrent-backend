@@ -1,0 +1,15 @@
+server:
+  port:
+    8081
+spring:
+  kafka:
+    template:
+      email-topic: emails
+    consumer:
+      auto-offset-reset: earliest
+      group-id: app-group
+
+sender:
+  auth:
+    username: ${SENDER_AUTH_USERNAME}
+    password: ${SENDER_AUTH_PASSWORD}

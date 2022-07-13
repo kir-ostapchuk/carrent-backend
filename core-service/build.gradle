@@ -1,0 +1,26 @@
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+    implementation 'org.springframework.session:spring-session-data-mongodb'
+    implementation 'redis.clients:jedis:4.2.2'
+    implementation platform('com.amazonaws:aws-java-sdk-bom:1.12.191')
+    implementation 'com.amazonaws:aws-java-sdk-s3'
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+    implementation 'org.springdoc:springdoc-openapi-ui:1.6.7'
+    implementation 'org.springdoc:springdoc-openapi-security:1.6.7'
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+    compileOnly 'org.flywaydb:flyway-core'
+    runtimeOnly 'org.postgresql:postgresql'
+}
+
+bootJar {
+    enabled = true
+}
+
+bootBuildImage {
+    imageName = 'qjnzero/' + rootProject.name + '-' + project.name
+}

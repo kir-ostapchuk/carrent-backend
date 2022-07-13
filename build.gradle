@@ -4,38 +4,53 @@ plugins {
     id 'java'
 }
 
-group = 'com.ostapchuk'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
-
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
-    }
-}
-
 repositories {
     mavenCentral()
 }
 
-dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    implementation platform('com.amazonaws:aws-java-sdk-bom:1.12.191')
-    implementation 'com.amazonaws:aws-java-sdk-s3'
-    implementation 'io.jsonwebtoken:jjwt:0.9.1'
-    implementation 'org.springdoc:springdoc-openapi-ui:1.6.7'
-    implementation 'org.springdoc:springdoc-openapi-security:1.6.7'
-    implementation 'io.micrometer:micrometer-registry-prometheus'
-    compileOnly 'org.projectlombok:lombok'
-    compileOnly 'org.flywaydb:flyway-core'
-    runtimeOnly 'org.postgresql:postgresql'
-    annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+allprojects {
+    group = 'com.ostapchuk'
+    version = '0.0.1-SNAPSHOT'
+    sourceCompatibility = '17'
 }
 
-tasks.named('test') {
-    useJUnitPlatform()
+subprojects {
+
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'java'
+
+    repositories {
+        mavenCentral()
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
+
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        implementation 'org.springframework.kafka:spring-kafka'
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    }
+
+    tasks.named('test') {
+        useJUnitPlatform()
+    }
+}
+
+bootJar {
+    enabled = false
+}
+
+bootBuildImage {
+    enabled = false
 }

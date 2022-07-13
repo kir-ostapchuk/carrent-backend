@@ -11,11 +11,9 @@ services:
     ports:
       - "5432:5432"
 
-  carrent-backend:
-    build:
-      context: .
-    image: carrent-backend:latest
-    container_name: carrent-backend
+  core-service:
+    image: docker.io/qjnzero/carrent-backend-core-service:latest
+    container_name: core-service
     ports:
       - "8080:8080"
     environment:
@@ -32,6 +30,13 @@ services:
       - PAYPAL_SECRET=${PAYPAL_SECRET}
       - APPLICATION_PORT=${APPLICATION_PORT}
       - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+      - MONGODB_DATABASE=${MONGODB_DATABASE}
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - MONGODB_HOST=${MONGODB_HOST}
+      - MONGODB_PORT=${MONGODB_PORT}
+      - REDIS_CACHE_PORT=${REDIS_CACHE_PORT}
+      - REDIS_CACHE_HOST=${REDIS_CACHE_HOST}
 
   prometheus:
     image: prom/prometheus
@@ -47,3 +52,37 @@ services:
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
+
+  redis:
+    image: "redis:latest"
+    ports:
+      - "6379:6379"
+
+  mongodb:
+    image: mongo:latest
+    container_name: carrent-sessions
+    ports:
+      - "27017:27017"
+
+  zookeeper:
+    container_name: zookeeper
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_SERVER_ID: 1
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+
+  kafka:
+    container_name: kafka
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
